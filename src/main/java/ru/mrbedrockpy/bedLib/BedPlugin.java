@@ -13,8 +13,9 @@ public abstract class BedPlugin<P extends BedPlugin<P>> extends JavaPlugin {
 
     @Override
     public final void onEnable() {
-        registerConfigs();
-        registerManagers();
+        this.registerConfigs();
+        this.registerManagers();
+        this.importLibraries();
         this.commandManager = new CommandManager<>((P) this);
         this.commandManager.registerCommands();
     }
@@ -22,12 +23,13 @@ public abstract class BedPlugin<P extends BedPlugin<P>> extends JavaPlugin {
     @Override
     public final void onDisable() {
         if (this.commandManager != null) this.commandManager.unregisterCommands();
-        saveManagers();
-        saveConfigs();
+        this.saveManagers();
+        this.saveConfigs();
     }
 
     protected void registerConfigs() {}
     protected void registerManagers() {}
+    protected void importLibraries() {}
 
     protected void saveManagers() {}
     protected void saveConfigs() {}
