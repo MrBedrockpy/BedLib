@@ -127,11 +127,11 @@ public final class ConfigManager<P extends BedPlugin<P>> extends Manager<P> {
                     Serializer<?> serializer = serializeConfig.getSerializer(fieldData.getType());
                     if (serializer == null) throw new RuntimeException("Serializer not found: " + fieldData.getType().getName());
                     configuration.set(fieldData.getName(), serialize(serializer, fieldData.getValue()));
-                    if (fieldData.getCommentType() != null) {
-                        switch (fieldData.getCommentType()) {
-                            case TOP -> configuration.setComments(fieldData.getName(), fieldData.getComment());
-                            case INLINE -> configuration.setInlineComments(fieldData.getName(), fieldData.getComment());
-                        }
+                }
+                if (fieldData.getCommentType() != null) {
+                    switch (fieldData.getCommentType()) {
+                        case TOP -> configuration.setComments(fieldData.getName(), fieldData.getComment());
+                        case INLINE -> configuration.setInlineComments(fieldData.getName(), fieldData.getComment());
                     }
                 }
             } catch (Exception e) {
