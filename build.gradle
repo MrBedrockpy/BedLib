@@ -29,6 +29,10 @@ dependencies {
 }
 
 tasks {
+    shadowJar {
+        configurations = project.configurations.named('runtimeClasspath').map { [it] }
+        archiveFileName = "${project.name}-${project.version}.jar"
+    }
     runServer {
         minecraftVersion "1.19"
     }
