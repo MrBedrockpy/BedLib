@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "ru.mrbedrockpy"
-version = "spigot-1.1"
+version = "spigot-1.2"
 def artifact = "BedLib"
 
 repositories {
@@ -53,17 +53,6 @@ tasks.withType(JavaCompile).configureEach {
 
     if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
         options.release.set(targetJavaVersion)
-    }
-}
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = project.group
-            artifactId = artifact
-            version = project.version
-            from components.java
-        }
     }
 }
 

@@ -79,6 +79,14 @@ public final class ConfigManager<P extends BedPlugin<P>> extends Manager<P> {
         for (ConfigData configData : configs) {
             File configFile = new File(configFolder, configData.getName());
             YamlConfiguration configuration = YamlConfiguration.loadConfiguration(configFile);
+            if (!configFile.exists()) {
+                loadConfig(configData, configuration);
+                try {
+                    configuration.save(configFile);
+                } catch (Exception e) {
+                    getPlugin().getLogger().warning("Failed to save config " + configData.getName() + ": " + e.getMessage());
+                }
+            }
             loadConfig(configData, configuration);
         }
     }
