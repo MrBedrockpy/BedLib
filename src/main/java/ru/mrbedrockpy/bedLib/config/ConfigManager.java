@@ -80,7 +80,7 @@ public final class ConfigManager<P extends BedPlugin<P>> extends Manager<P> {
             File configFile = new File(configFolder, configData.getName());
             YamlConfiguration configuration = YamlConfiguration.loadConfiguration(configFile);
             if (!configFile.exists()) {
-                loadConfig(configData, configuration);
+                this.saveConfig(configData, configuration);
                 try {
                     configuration.save(configFile);
                 } catch (Exception e) {
