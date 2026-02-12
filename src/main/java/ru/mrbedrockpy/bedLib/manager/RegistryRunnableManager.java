@@ -1,5 +1,6 @@
 package ru.mrbedrockpy.bedLib.manager;
 
+import dev.rollczi.litecommands.argument.parser.ParseResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.mrbedrockpy.bedLib.BedPlugin;
@@ -63,18 +64,22 @@ public abstract class RegistryRunnableManager<P extends BedPlugin<P>, I extends 
         return unregisterAll(Arrays.asList(items));
     }
 
-    @Nullable public I get(String id) {
+    @Nullable
+    public I get(String id) {
         return this.items.get(id);
     }
-    @NotNull public I getOrDefault(String id, I defaultValue) {
+
+    public I getOrDefault(String id, I defaultValue) {
         return this.items.getOrDefault(id, defaultValue);
     }
-    @NotNull public I getAndCreateIfNotExists(String id, I defaultValue) {
-        I item = this.items.get(id);
-        if (item == null) {
-            item = defaultValue;
-            register(item);
-        }
-        return item;
+
+    public I getAndCreateIfNotExists(String id, I defaultValue) {
+        return this.items.computeIfAbsent(id, k -> defaultValue);
+    }
+
+    public ParseResult<I> getAsCommandArgument(String id, Object failure) {
+        I item = this.get(id);
+        if (item == null) return ParseResult.failure(failure);
+        return ParseResult.success(item);
     }
 }
