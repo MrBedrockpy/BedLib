@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.bukkit.ChatColor;
 import ru.mrbedrockpy.bedLib.serialize.Serializer;
 
 import java.util.Arrays;
@@ -40,7 +41,11 @@ public class Text {
     public String toText(TextFormat format) {
         return format.serialize(component);
     }
+    public String toVanilla() {
+        return ChatColor.translateAlternateColorCodes('&', this.toText(TextFormat.LEGACY_AMPERSAND));
+    }
 
+    @SafeVarargs
     public final Text applyPlaceholders(Function<String, String>... placeholders) {
         AtomicReference<String> text = new AtomicReference<>(this.toText());
         Arrays.stream(placeholders).forEach(p -> text.set(p.apply(text.get())));
@@ -53,7 +58,7 @@ public class Text {
                 LegacyComponentSerializer.legacySection()::serialize,
                 LegacyComponentSerializer.legacyAmpersand()::deserialize
         ),
-        Legacy_AMPERSAND(
+        LEGACY_AMPERSAND(
                 LegacyComponentSerializer.legacyAmpersand()::serialize,
                 LegacyComponentSerializer.legacyAmpersand()::deserialize
         ),
