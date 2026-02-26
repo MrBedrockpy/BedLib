@@ -9,6 +9,6 @@ public interface Item {
 
     ItemBuilder getProvider(Player player);
 
-    void onClick(Menu menu, InventoryClickEvent event);
+    void onClick(Menu<?> menu, InventoryClickEvent event);
 
 }
