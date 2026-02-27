@@ -58,11 +58,22 @@ tasks.withType(JavaCompile).configureEach {
 
 publishing {
     publications {
-        maven(MavenPublication) {
-            groupId = project.group
-            artifactId = artifact
-            version = project.version
+        mavenJava(MavenPublication) {
             from components.java
+            groupId = group
+            artifactId = artifact
+            version = version
+        }
+    }
+    repositories {
+        maven {
+            name = "Nexus"
+            def baseUrl = "https://repo.mrbedrockpy.ru/repository"
+            url = version.endsWith('SNAPSHOT') ? "$baseUrl/maven-snapshots/" : "$baseUrl/maven-releases/"
+            credentials {
+                username = project.findProperty("nexusUsername") ?: System.getenv("NEXUS_USERNAME")
+                password = project.findProperty("nexusPassword") ?: System.getenv("NEXUS_PASSWORD")
+            }
         }
     }
 }
