@@ -35,7 +35,7 @@ public final class ConfigManager<P extends BedPlugin<P>> extends Manager<P> {
     private ConfigData initConfig(Class<?> clazz) {
         Config configAnnotation = clazz.getAnnotation(Config.class);
         if (configAnnotation == null) {
-            getPlugin().getLogger().warning(clazz.getName() + " is not annotated with @Config");
+            plugin.getLogger().warning(clazz.getName() + " is not annotated with @Config");
             return null;
         }
         List<ConfigFieldData<?>> fields = new ArrayList<>();
@@ -47,14 +47,14 @@ public final class ConfigManager<P extends BedPlugin<P>> extends Manager<P> {
             try {
                 Object value = field.get(null);
                 if (value == null) {
-                    getPlugin().getLogger().warning("Field cannot be null: " + fieldAnnotation.name());
+                    plugin.getLogger().warning("Field cannot be null: " + fieldAnnotation.name());
                     continue;
                 }
                 Comment comment = field.getAnnotation(Comment.class);
                 if (comment != null) fields.add(new ConfigFieldData<>(fieldAnnotation.name(), field.getType(), field, comment.type(), Arrays.asList(comment.comment())));
                 else fields.add(new ConfigFieldData<>(fieldAnnotation.name(), field.getType(), field, null, null));
             } catch (IllegalAccessException e) {
-                getPlugin().getLogger().warning(fieldAnnotation.name() + "'s access error : " + e.getMessage());
+                plugin.getLogger().warning(fieldAnnotation.name() + "'s access error : " + e.getMessage());
             }
         }
         return new ConfigData(
@@ -95,7 +95,7 @@ public final class ConfigManager<P extends BedPlugin<P>> extends Manager<P> {
                         fieldData.setValue(serializer.deserialize(configuration.getString(fieldData.getName())));
                     }
                 } catch (Exception e) {
-                    getPlugin().getLogger().warning("Failed to set value for field " + fieldData.getName() + ": " + e.getMessage());
+                    plugin.getLogger().warning("Failed to set value for field " + fieldData.getName() + ": " + e.getMessage());
                 }
             }
         }
@@ -114,7 +114,7 @@ public final class ConfigManager<P extends BedPlugin<P>> extends Manager<P> {
             try {
                 configuration.save(file);
             } catch (Exception e) {
-                getPlugin().getLogger().warning("Failed to save config " + config.getName() + ": " + e.getMessage());
+                plugin.getLogger().warning("Failed to save config " + config.getName() + ": " + e.getMessage());
             }
         }
     }
@@ -135,7 +135,7 @@ public final class ConfigManager<P extends BedPlugin<P>> extends Manager<P> {
                     }
                 }
             } catch (Exception e) {
-                getPlugin().getLogger().warning("Failed to get value for field " + fieldData.getName() + ": " + e.getMessage());
+                plugin.getLogger().warning("Failed to get value for field " + fieldData.getName() + ": " + e.getMessage());
             }
         }
         for (ConfigData category : configData.getCategories()) {

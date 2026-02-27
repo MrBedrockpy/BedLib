@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "ru.mrbedrockpy"
-version = "1.1"
+version = "1.3.1"
 def artifact = "BedLib"
 
 repositories {
@@ -18,9 +18,6 @@ repositories {
     maven {
         url "https://repo.panda-lang.org/releases"
     }
-    maven {
-        url = 'https://repo.xenondevs.xyz/releases'
-    }
 }
 
 dependencies {
@@ -28,7 +25,6 @@ dependencies {
     compileOnly "org.projectlombok:lombok:1.18.34"
     annotationProcessor "org.projectlombok:lombok:1.18.34"
     implementation "dev.rollczi:litecommands-bukkit:3.10.2"
-    implementation 'xyz.xenondevs.invui:invui:1.47'
     implementation "io.github.classgraph:classgraph:4.8.171"
 }
 
@@ -38,7 +34,7 @@ tasks {
         archiveFileName = "${project.name}-${project.version}.jar"
     }
     runServer {
-        minecraftVersion "1.19"
+        minecraftVersion "1.21.1"
     }
 }
 
@@ -62,11 +58,22 @@ tasks.withType(JavaCompile).configureEach {
 
 publishing {
     publications {
-        maven(MavenPublication) {
-            groupId = project.group
-            artifactId = artifact
-            version = project.version
+        mavenJava(MavenPublication) {
             from components.java
+            groupId = group
+            artifactId = artifact
+            version = version
+        }
+    }
+    repositories {
+        maven {
+            name = "Nexus"
+            def baseUrl = "https://repo.mrbedrockpy.ru/repository"
+            url = version.endsWith('SNAPSHOT') ? "$baseUrl/maven-snapshots/" : "$baseUrl/maven-releases/"
+            credentials {
+                username = project.findProperty("nexusUsername") ?: System.getenv("NEXUS_USERNAME")
+                password = project.findProperty("nexusPassword") ?: System.getenv("NEXUS_PASSWORD")
+            }
         }
     }
 }

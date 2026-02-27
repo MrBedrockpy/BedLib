@@ -5,6 +5,6 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Comment {
-    CommentType type() default CommentType.INLINE;
+    CommentType type() default CommentType.TOP;
     String[] comment();
 }

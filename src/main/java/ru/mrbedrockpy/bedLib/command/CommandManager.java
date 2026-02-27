@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.command.CommandSender;
 import ru.mrbedrockpy.bedLib.BedPlugin;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +34,7 @@ public class CommandManager<P extends BedPlugin<P>> {
                 .scan()) {
             for (ClassInfo classInfo : scanResult.getClassesWithAnnotation(AutoRegister.class.getName())) {
                 Class<?> clazz = classInfo.loadClass();
-                Object instance = clazz.getDeclaredConstructor(plugin.getClass()).newInstance(plugin);
+                Object instance = this.getCommandInstance(clazz, plugin.getClass());
                 if (clazz.getAnnotation(Command.class) != null) commands.add(instance);
                 if (instance instanceof Argument<?, ?> argument) arguments.add((Argument<P, ?>) argument);
             }
@@ -52,5 +54,17 @@ public class CommandManager<P extends BedPlugin<P>> {
         if (this.commands == null) return;
         this.commands.unregister();
         this.commands = null;
+    }
+
+    private Object getCommandInstance(Class<?> clazz, Class<?> pluginClazz) {
+        try {
+            return clazz.getConstructor(pluginClazz).newInstance(plugin);
+        } catch (ReflectiveOperationException e) {
+            try {
+                return clazz.getConstructor().newInstance();
+            } catch (ReflectiveOperationException e1) {
+                throw new RuntimeException("Can't find constructor for " + clazz.getName());
+            }
+        }
     }
 }

@@ -4,9 +4,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.bukkit.ChatColor;
 import ru.mrbedrockpy.bedLib.serialize.Serializer;
-import xyz.xenondevs.inventoryaccess.component.AdventureComponentWrapper;
-import xyz.xenondevs.inventoryaccess.component.ComponentWrapper;
 
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
@@ -22,6 +21,9 @@ public class Text {
 
     public static Text fromAdventure(TextComponent component) {
         return new Text(component);
+    }
+    public static Text fromAdventure(Component component) {
+        return Text.fromAdventure((TextComponent) component);
     }
     public static Text fromText(String text) {
         return fromText(text, TextFormat.MINI_MESSAGE);
@@ -39,10 +41,11 @@ public class Text {
     public String toText(TextFormat format) {
         return format.serialize(component);
     }
-    public ComponentWrapper toInvUI() {
-        return new AdventureComponentWrapper(component);
+    public String toVanilla() {
+        return ChatColor.translateAlternateColorCodes('&', this.toText(TextFormat.LEGACY_AMPERSAND));
     }
 
+    @SafeVarargs
     public final Text applyPlaceholders(Function<String, String>... placeholders) {
         AtomicReference<String> text = new AtomicReference<>(this.toText());
         Arrays.stream(placeholders).forEach(p -> text.set(p.apply(text.get())));
@@ -55,7 +58,7 @@ public class Text {
                 LegacyComponentSerializer.legacySection()::serialize,
                 LegacyComponentSerializer.legacyAmpersand()::deserialize
         ),
-        Legacy_AMPERSAND(
+        LEGACY_AMPERSAND(
                 LegacyComponentSerializer.legacyAmpersand()::serialize,
                 LegacyComponentSerializer.legacyAmpersand()::deserialize
         ),
