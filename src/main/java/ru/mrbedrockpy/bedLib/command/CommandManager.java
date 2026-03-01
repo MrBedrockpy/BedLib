@@ -23,11 +23,16 @@ public class CommandManager<P extends BedPlugin<P>> {
     private final P plugin;
     private LiteCommands<CommandSender> commands;
 
+    private final List<Argument<P, ?>> arguments = new ArrayList<>();
+
+    public void argument(Argument<P, ?> argument) {
+        arguments.add(argument);
+    }
+
     public void registerCommands() {
         if (this.commands != null) return;
         LiteCommandsBuilder<CommandSender, LiteBukkitSettings, ?> builder = LiteBukkitFactory.builder(plugin);
         List<Object> commands = new ArrayList<>();
-        List<Argument<P, ?>> arguments = new ArrayList<>();
         try (ScanResult scanResult = new ClassGraph()
                 .enableClassInfo().enableAnnotationInfo()
                 .addClassLoader(plugin.getClass().getClassLoader())
@@ -46,14 +51,14 @@ public class CommandManager<P extends BedPlugin<P>> {
         this.commands = builder.build();
     }
 
-    public <T> void registerArgument(LiteCommandsBuilder<CommandSender, LiteBukkitSettings, ?> builder, Argument<P, T> argument) {
-        builder.argument(argument.getType(), argument);
-    }
-
     public void unregisterCommands() {
         if (this.commands == null) return;
         this.commands.unregister();
         this.commands = null;
+    }
+
+    private  <T> void registerArgument(LiteCommandsBuilder<CommandSender, LiteBukkitSettings, ?> builder, Argument<P, T> argument) {
+        builder.argument(argument.getType(), argument);
     }
 
     private Object getCommandInstance(Class<?> clazz, Class<?> pluginClazz) {

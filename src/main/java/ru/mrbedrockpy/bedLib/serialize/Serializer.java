@@ -2,13 +2,13 @@ package ru.mrbedrockpy.bedLib.serialize;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import ru.mrbedrockpy.bedLib.manager.ManagerItem;
+import ru.mrbedrockpy.bedLib.manager.Dto;
 
 import java.util.function.Function;
 
 @Getter
 @AllArgsConstructor
-public class Serializer<T> implements ManagerItem {
+public class Serializer<T> implements Dto {
 
     private final Class<T> type;
     private final Function<T, String> serializer;

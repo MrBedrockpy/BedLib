@@ -1,25 +1,33 @@
 package ru.mrbedrockpy.bedLib.manager;
 
 import dev.rollczi.litecommands.argument.parser.ParseResult;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.mrbedrockpy.bedLib.BedPlugin;
 
 import java.util.*;
 
-public abstract class RegistryRunnableManager<P extends BedPlugin<P>, I extends ManagerItem> extends RunnableManager<P> {
+public abstract class RegistryRunnableManager<P extends BedPlugin<P>, I extends Dto> extends RunnableManager<P> implements Registry<I> {
 
     private final Map<String, I> items = new HashMap<>();
     private final DuplicatePolicy duplicatePolicy;
+    private final DtoLoader<I> loader;
 
     public RegistryRunnableManager(P plugin) {
-        super(plugin);
-        this.duplicatePolicy = DuplicatePolicy.OVERWRITE;
+        this(plugin, DuplicatePolicy.OVERWRITE);
     }
 
     public RegistryRunnableManager(P plugin, DuplicatePolicy duplicatePolicy) {
+        this(plugin, duplicatePolicy, null);
+    }
+
+    public RegistryRunnableManager(P plugin, DtoLoader<I> loader) {
+        this(plugin, DuplicatePolicy.OVERWRITE, loader);
+    }
+
+    public RegistryRunnableManager(P plugin, DuplicatePolicy duplicatePolicy, DtoLoader<I> loader) {
         super(plugin);
         this.duplicatePolicy = duplicatePolicy;
+        this.loader = loader;
     }
 
     public void clear() {
@@ -81,5 +89,15 @@ public abstract class RegistryRunnableManager<P extends BedPlugin<P>, I extends 
         I item = this.get(id);
         if (item == null) return ParseResult.failure(failure);
         return ParseResult.success(item);
+    }
+
+    @Override
+    public void load() {
+        if (this.loader != null) this.loader.load();
+    }
+
+    @Override
+    public void save() {
+        if (this.loader != null) this.loader.save();
     }
 }

@@ -1,10 +1,12 @@
 package ru.mrbedrockpy.bedLib;
 
+import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.mrbedrockpy.bedLib.command.CommandManager;
 import ru.mrbedrockpy.bedLib.config.ConfigManager;
 import ru.mrbedrockpy.bedLib.serialize.SerializeConfig;
 
+@Getter
 public abstract class BedPlugin<P extends BedPlugin<P>> extends JavaPlugin {
 
     private CommandManager<P> commandManager;
@@ -13,9 +15,9 @@ public abstract class BedPlugin<P extends BedPlugin<P>> extends JavaPlugin {
 
     @Override
     public final void onEnable() {
+        this.importLibraries();
         this.registerConfigs();
         this.registerManagers();
-        this.importLibraries();
         this.commandManager = new CommandManager<>((P) this);
         this.commandManager.registerCommands();
     }
@@ -27,9 +29,9 @@ public abstract class BedPlugin<P extends BedPlugin<P>> extends JavaPlugin {
         this.saveConfigs();
     }
 
+    protected void importLibraries() {}
     protected void registerConfigs() {}
     protected void registerManagers() {}
-    protected void importLibraries() {}
 
     protected void saveManagers() {}
     protected void saveConfigs() {}

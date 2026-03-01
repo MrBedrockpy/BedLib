@@ -7,65 +7,12 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ChestSlot {
 
-    ROW_1_COL_1(0),
-    ROW_1_COL_2(1),
-    ROW_1_COL_3(2),
-    ROW_1_COL_4(3),
-    ROW_1_COL_5(4),
-    ROW_1_COL_6(5),
-    ROW_1_COL_7(6),
-    ROW_1_COL_8(7),
-    ROW_1_COL_9(8),
-
-    ROW_2_COL_1(9),
-    ROW_2_COL_2(10),
-    ROW_2_COL_3(11),
-    ROW_2_COL_4(12),
-    ROW_2_COL_5(13),
-    ROW_2_COL_6(14),
-    ROW_2_COL_7(15),
-    ROW_2_COL_8(16),
-    ROW_2_COL_9(17),
-
-    ROW_3_COL_1(18),
-    ROW_3_COL_2(19),
-    ROW_3_COL_3(20),
-    ROW_3_COL_4(21),
-    ROW_3_COL_5(22),
-    ROW_3_COL_6(23),
-    ROW_3_COL_7(24),
-    ROW_3_COL_8(25),
-    ROW_3_COL_9(26),
-
-    ROW_4_COL_1(27),
-    ROW_4_COL_2(28),
-    ROW_4_COL_3(29),
-    ROW_4_COL_4(30),
-    ROW_4_COL_5(31),
-    ROW_4_COL_6(32),
-    ROW_4_COL_7(33),
-    ROW_4_COL_8(34),
-    ROW_4_COL_9(35),
-
-    ROW_5_COL_1(36),
-    ROW_5_COL_2(37),
-    ROW_5_COL_3(38),
-    ROW_5_COL_4(39),
-    ROW_5_COL_5(40),
-    ROW_5_COL_6(41),
-    ROW_5_COL_7(42),
-    ROW_5_COL_8(43),
-    ROW_5_COL_9(44),
-
-    ROW_6_COL_1(45),
-    ROW_6_COL_2(46),
-    ROW_6_COL_3(47),
-    ROW_6_COL_4(48),
-    ROW_6_COL_5(49),
-    ROW_6_COL_6(50),
-    ROW_6_COL_7(51),
-    ROW_6_COL_8(52),
-    ROW_6_COL_9(53);
+    R1C1(0),  R1C2(1),  R1C3(2),  R1C4(3),  R1C5(4),  R1C6(5),  R1C7(6),  R1C8(7),  R1C9(8),
+    R2C1(9),  R2C2(10), R2C3(11), R2C4(12), R2C5(13), R2C6(14), R2C7(15), R2C8(16), R2C9(17),
+    R3C1(18), R3C2(19), R3C3(20), R3C4(21), R3C5(22), R3C6(23), R3C7(24), R3C8(25), R3C9(26),
+    R4C1(27), R4C2(28), R4C3(29), R4C4(30), R4C5(31), R4C6(32), R4C7(33), R4C8(34), R4C9(35),
+    R5C1(36), R5C2(37), R5C3(38), R5C4(39), R5C5(40), R5C6(41), R5C7(42), R5C8(43), R5C9(44),
+    R6C1(45), R6C2(46), R6C3(47), R6C4(48), R6C5(49), R6C6(50), R6C7(51), R6C8(52), R6C9(53);
 
     private final int slot;
 

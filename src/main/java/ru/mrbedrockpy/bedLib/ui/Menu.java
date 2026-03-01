@@ -11,7 +11,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.persistence.PersistentDataType;
-import ru.mrbedrockpy.bedLib.manager.ManagerItem;
+import ru.mrbedrockpy.bedLib.manager.Dto;
 import ru.mrbedrockpy.bedLib.ui.gui.Gui;
 import ru.mrbedrockpy.bedLib.ui.item.GlobalItem;
 import ru.mrbedrockpy.bedLib.ui.item.Item;
@@ -20,7 +20,7 @@ import java.util.*;
 
 @Getter
 @RequiredArgsConstructor
-public abstract class Menu<M extends Menu<M>> implements ManagerItem {
+public abstract class Menu<M extends Menu<M>> implements Dto {
 
     public static final NamespacedKey MENU_ID = new NamespacedKey("bedlib", "menu_id");
 
