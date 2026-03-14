@@ -20,14 +20,14 @@ public abstract class RegistryManager<P extends BedPlugin<P>, I extends Dto> ext
         this(plugin, duplicatePolicy, null);
     }
 
-    public RegistryManager(P plugin, DtoLoader<I> loader) {
+    public RegistryManager(P plugin, DtoLoaderBuilder<I> loader) {
         this(plugin, DuplicatePolicy.OVERWRITE, loader);
     }
 
-    public RegistryManager(P plugin, DuplicatePolicy duplicatePolicy, DtoLoader<I> loader) {
+    public RegistryManager(P plugin, DuplicatePolicy duplicatePolicy, DtoLoaderBuilder<I> loader) {
         super(plugin);
         this.duplicatePolicy = duplicatePolicy;
-        this.loader = loader;
+        this.loader = loader.build(this);
     }
 
     public void clear() {

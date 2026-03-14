@@ -15,10 +15,10 @@ public abstract class BedPlugin<P extends BedPlugin<P>> extends JavaPlugin {
 
     @Override
     public final void onEnable() {
+        this.commandManager = new CommandManager<>((P) this);
         this.importLibraries();
         this.registerConfigs();
         this.registerManagers();
-        this.commandManager = new CommandManager<>((P) this);
         this.commandManager.registerCommands();
     }
 
