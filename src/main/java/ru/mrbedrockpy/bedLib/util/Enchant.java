@@ -20,4 +20,11 @@ public class Enchant {
         this.level = enchant.getValue();
     }
 
+    public static Enchant of(Enchantment enchantment, int level) {
+        return new Enchant(enchantment, level);
+    }
+    public static Enchant of(Map.Entry<Enchantment, Integer> enchant) {
+        return new Enchant(enchant);
+    }
+
 }

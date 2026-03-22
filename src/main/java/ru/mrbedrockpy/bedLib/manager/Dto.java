@@ -1,6 +1,6 @@
 package ru.mrbedrockpy.bedLib.manager;
 
-public interface ManagerItem {
+public interface Dto {
 
     String getId();
 

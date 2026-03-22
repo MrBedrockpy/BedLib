@@ -79,5 +79,10 @@ public class Text {
         public TextComponent deserialize(String text) {
             return serializer.deserialize(text);
         }
+
+        public static TextFormat getByName(String name) {
+            for (TextFormat format : TextFormat.values()) if (format.name().equalsIgnoreCase(name)) return format;
+            return null;
+        }
     }
 }

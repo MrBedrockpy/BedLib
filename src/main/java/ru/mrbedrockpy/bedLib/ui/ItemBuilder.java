@@ -48,7 +48,6 @@ public class ItemBuilder implements Supplier<ItemStack> {
         this(new ItemStack(material, amount));
     }
 
-
     public Text getDisplayName() {
         return Text.fromAdventure(this.meta.displayName());
     }
@@ -101,6 +100,14 @@ public class ItemBuilder implements Supplier<ItemStack> {
     public ItemBuilder setUnbreakable(boolean unbreakable) {
         this.meta.setUnbreakable(unbreakable);
         return this;
+    }
+
+    public int getCustomModelData() {
+        return this.meta.getCustomModelData();
+    }
+
+    public int setCustomModelData(int data) {
+        this.meta.setCustomModelData(data);
     }
 
     public int getDurability() {
