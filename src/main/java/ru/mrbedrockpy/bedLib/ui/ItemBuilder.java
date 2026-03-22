@@ -106,8 +106,9 @@ public class ItemBuilder implements Supplier<ItemStack> {
         return this.meta.getCustomModelData();
     }
 
-    public void setCustomModelData(int data) {
+    public ItemBuilder setCustomModelData(int data) {
         this.meta.setCustomModelData(data);
+        return this;
     }
 
     public int getDurability() {
