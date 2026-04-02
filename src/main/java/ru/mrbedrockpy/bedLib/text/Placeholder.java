@@ -17,6 +17,6 @@ public class Placeholder<T> {
 
     public Function<String, String> apply(T obj) {
         String serialized = serializer.apply(obj);
-        return s -> s.replace(id, "%" + serialized + "%");
+        return s -> s.replace("%" + id + "%", serialized);
     }
 }
