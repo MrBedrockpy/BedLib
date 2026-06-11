@@ -5,12 +5,12 @@ import dev.rollczi.litecommands.invocation.Invocation;
 import dev.rollczi.litecommands.suggestion.SuggestionContext;
 import dev.rollczi.litecommands.suggestion.SuggestionResult;
 import org.bukkit.command.CommandSender;
-import ru.mrbedrockpy.bedLib.BedPlugin;
-import ru.mrbedrockpy.bedLib.manager.Dto;
-import ru.mrbedrockpy.bedLib.manager.Registry;
-import ru.mrbedrockpy.bedLib.serialize.Serializers;
-import ru.mrbedrockpy.bedLib.text.Placeholder;
-import ru.mrbedrockpy.bedLib.text.Text;
+import ru.mrbedrockpy.bedlib.BedPlugin;
+import ru.mrbedrockpy.bedlib.manager.Dto;
+import ru.mrbedrockpy.bedlib.manager.Registry;
+import ru.mrbedrockpy.bedlib.serialize.Serializers;
+import ru.mrbedrockpy.bedlib.text.Placeholder;
+import ru.mrbedrockpy.bedlib.text.Text;
 
 public class ArgumentFromRegistry<P extends BedPlugin<P>, T extends Dto> extends Argument<P, T> {
 
