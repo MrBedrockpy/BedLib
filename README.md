@@ -23,6 +23,6 @@ repositories {
 И саму зависимость:
 ```groovy
 dependencies {
-    compileOnly "ru.mrbedrockpy:BedLib:1.3.1"
+    compileOnly "ru.mrbedrockpy:BedLib:1.4.4"
 }
 ```
