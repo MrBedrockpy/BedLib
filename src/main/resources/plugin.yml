@@ -1,4 +1,4 @@
 name: BedLib
-version: '1.4.4'
+version: '1.4.5'
 main: ru.mrbedrockpy.bedlib.BedLib
 api-version: '1.19'
