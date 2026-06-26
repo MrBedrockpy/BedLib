@@ -3,7 +3,6 @@ package ru.mrbedrockpy.bedlib.script;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import ru.mrbedrockpy.bedlib.BedPlugin;
-import ru.mrbedrockpy.bedlib.text.Placeholder;
 import ru.mrbedrockpy.bedlib.text.Text;
 
 import java.util.List;
@@ -14,28 +13,16 @@ import java.util.function.BiConsumer;
 public class ScriptRegulation<P extends BedPlugin<P>> {
 
     public static final ScriptRegulation<?> MESSAGE = new ScriptRegulation<>("msg", "", (ctx, args) -> {
-        ctx.getPlayer().sendMessage(
-                Text.fromText(String.join(" ", args))
-                        .applyPlaceholders(Placeholder.PLAYER.apply(ctx.getPlayer()))
-                        .toAdventure()
-        );
+        ctx.getPlayer().sendMessage(Text.fromText(String.join(" ", args)).applyPlaceholders(ctx.getPlayer()).toAdventure());
     });
 
     public static final ScriptRegulation<?> PLAYER_CMD = new ScriptRegulation<>("msg", "", (ctx, args) -> {
-        ctx.getPlayer().performCommand(
-                Text.fromText(String.join(" ", args))
-                        .applyPlaceholders(Placeholder.PLAYER.apply(ctx.getPlayer()))
-                        .toText()
-        );
+        ctx.getPlayer().performCommand(Text.fromText(String.join(" ", args)).applyPlaceholders(ctx.getPlayer()).toText());
     });
 
     public static final ScriptRegulation<?> CONSOLE_CMD = new ScriptRegulation<>("msg", "", (ctx, args) -> {
-        ctx.getServer().dispatchCommand(
-                ctx.getServer().getConsoleSender(),
-                Text.fromText(String.join(" ", args))
-                        .applyPlaceholders(Placeholder.PLAYER.apply(ctx.getPlayer()))
-                        .toText()
-        );
+        ctx.getServer().dispatchCommand(ctx.getServer().getConsoleSender(), Text.fromText(
+                String.join(" ", args)).applyPlaceholders(ctx.getPlayer()).toText());
     });
 
     private final String id;

@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "ru.mrbedrockpy"
-version = "1.4.5"
+version = "1.4.6"
 def artifact = "BedLib"
 
 repositories {
@@ -26,6 +26,8 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:1.18.34"
     implementation "dev.rollczi:litecommands-bukkit:3.10.2"
     implementation "io.github.classgraph:classgraph:4.8.171"
+
+    compileOnly fileTree("./libs")
 }
 
 shadowJar {

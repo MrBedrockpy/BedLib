@@ -5,6 +5,7 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import ru.mrbedrockpy.bedlib.serialize.Serializer;
 
 import java.util.Arrays;
@@ -49,11 +50,8 @@ public class Text {
         return ChatColor.translateAlternateColorCodes('&', this.toText(TextFormat.LEGACY_AMPERSAND));
     }
 
-    @SafeVarargs
-    public final Text applyPlaceholders(Function<String, String>... placeholders) {
-        AtomicReference<String> text = new AtomicReference<>(this.toText());
-        Arrays.stream(placeholders).forEach(p -> text.set(p.apply(text.get())));
-        return fromText(text.get());
+    public final Text applyPlaceholders(Player player) {
+        return fromText(PlaceholderContext.applyPlaceholders(player, this.toText()));
     }
 
     public enum TextFormat {

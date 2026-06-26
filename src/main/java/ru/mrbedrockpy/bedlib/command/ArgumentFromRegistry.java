@@ -9,21 +9,18 @@ import ru.mrbedrockpy.bedlib.BedPlugin;
 import ru.mrbedrockpy.bedlib.manager.Dto;
 import ru.mrbedrockpy.bedlib.manager.Registry;
 import ru.mrbedrockpy.bedlib.serialize.Serializers;
-import ru.mrbedrockpy.bedlib.text.Placeholder;
 import ru.mrbedrockpy.bedlib.text.Text;
 
 public class ArgumentFromRegistry<P extends BedPlugin<P>, T extends Dto> extends Argument<P, T> {
 
-    private static final Placeholder<String> ARGUMENT_VALUE_PLACEHOLDER = new Placeholder<>("arg", Serializers.STRING.getSerializer());
-
     private final Registry<T> registry;
-    private final Text notFoundMessage;
+    private final String notFoundMessage;
 
     public ArgumentFromRegistry(P plugin, Registry<T> registry, Class<T> type) {
-        this(plugin, registry, type, Text.fromText("<red>%arg% not found!"));
+        this(plugin, registry, type, "<red>%arg% not found!");
     }
 
-    public ArgumentFromRegistry(P plugin, Registry<T> registry, Class<T> type, Text notFoundMessage) {
+    public ArgumentFromRegistry(P plugin, Registry<T> registry, Class<T> type, String notFoundMessage) {
         super(plugin, type);
         this.registry = registry;
         this.notFoundMessage = notFoundMessage;
@@ -31,7 +28,7 @@ public class ArgumentFromRegistry<P extends BedPlugin<P>, T extends Dto> extends
 
     @Override
     protected ParseResult<T> parse(Invocation<CommandSender> invocation, dev.rollczi.litecommands.argument.Argument<T> context, String argument) {
-        return this.registry.getAsCommandArgument(argument, this.notFoundMessage.applyPlaceholders(ARGUMENT_VALUE_PLACEHOLDER.apply(argument)));
+        return this.registry.getAsCommandArgument(argument, this.notFoundMessage.replace("%arg%", argument));
     }
 
     @Override
