@@ -7,13 +7,13 @@ import ru.mrbedrockpy.bedlib.manager.Manager;
 
 public class Debug {
 
-    @Setter private static BedDebugger plugin;
+    @Setter private static BedDebugger plugin = null;
 
     public static <P extends BedPlugin<P>> void snapshot(P plugin) {
-        Debug.plugin.getPluginSnapshotManager().create(plugin);
+        if (Debug.plugin != null) Debug.plugin.getPluginSnapshotManager().create(plugin);
     }
 
     public static void snapshot(Manager<?> manager) {
-        Debug.plugin.getManagerSnapshotManager().create(manager);
+        if (Debug.plugin != null) Debug.plugin.getManagerSnapshotManager().create(manager);
     }
 }
