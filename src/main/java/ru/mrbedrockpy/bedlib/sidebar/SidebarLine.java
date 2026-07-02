@@ -15,7 +15,10 @@ public class SidebarLine {
     }
 
     public static SidebarLine text(String text) {
-        return new SidebarLine(Text.fromText(text), false);
+        return text(Text.fromText(text));
+    }
+    public static SidebarLine text(Text text) {
+        return new SidebarLine(text, false);
     }
 
     public static SidebarLine empty() {

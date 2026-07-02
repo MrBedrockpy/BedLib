@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "ru.mrbedrockpy"
-version = "1.4.7"
+version = "1.4.8"
 def artifact = "BedLib"
 
 repositories {
@@ -18,11 +18,15 @@ repositories {
     maven {
         url "https://repo.panda-lang.org/releases"
     }
+    maven {
+        url = 'https://repo.extendedclip.com/releases/'
+    }
 }
 
 dependencies {
     compileOnly "io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT"
     compileOnly "org.projectlombok:lombok:1.18.34"
+    compileOnly 'me.clip:placeholderapi:2.12.2'
     annotationProcessor "org.projectlombok:lombok:1.18.34"
     implementation "dev.rollczi:litecommands-bukkit:3.10.2"
     implementation "io.github.classgraph:classgraph:4.8.171"

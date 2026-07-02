@@ -1,4 +1,7 @@
 name: BedLib
-version: '1.4.7'
+version: '1.4.8'
 main: ru.mrbedrockpy.bedlib.BedLib
 api-version: '1.19'
+
+depend:
+  - "PlaceholderAPI"

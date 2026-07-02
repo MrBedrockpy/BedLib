@@ -24,14 +24,21 @@ public class SideBar {
     }
 
     public static SideBar create(String title) {
-        return new SideBar(Text.fromText(title));
+        return create(Text.fromText(title));
+    }
+    public static SideBar create(Text title) {
+        return new SideBar(title);
     }
 
     public void structure(SidebarLine... lines) {
-        if (lines.length > 15)
+        structure(Arrays.asList(lines));
+    }
+
+    public void structure(List<SidebarLine> lines) {
+        if (lines.size() > 15)
             throw new IllegalStateException("Max 15 lines");
         structure.clear();
-        structure.addAll(Arrays.asList(lines));
+        structure.addAll(lines);
     }
 
     public void addPlayers(Collection<Player> players) {

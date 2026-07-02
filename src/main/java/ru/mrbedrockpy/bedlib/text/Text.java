@@ -1,5 +1,6 @@
 package ru.mrbedrockpy.bedlib.text;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -51,7 +52,7 @@ public class Text {
     }
 
     public final Text applyPlaceholders(Player player) {
-        return fromText(PlaceholderContext.applyPlaceholders(player, this.toText()));
+        return fromText(PlaceholderAPI.setPlaceholders(player, this.toText()));
     }
 
     public enum TextFormat {

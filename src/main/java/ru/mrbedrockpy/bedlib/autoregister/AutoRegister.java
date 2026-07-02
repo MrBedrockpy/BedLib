@@ -1,4 +1,4 @@
-package ru.mrbedrockpy.bedlib.command;
+package ru.mrbedrockpy.bedlib.autoregister;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
