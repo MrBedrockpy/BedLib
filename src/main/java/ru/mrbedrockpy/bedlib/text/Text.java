@@ -51,8 +51,16 @@ public class Text {
         return ChatColor.translateAlternateColorCodes('&', this.toText(TextFormat.LEGACY_AMPERSAND));
     }
 
-    public final Text applyPlaceholders(Player player) {
+    public Text applyPlaceholders(Player player) {
         return fromText(PlaceholderAPI.setPlaceholders(player, this.toText()));
+    }
+
+    public Text replace(String from, String to) {
+        return refactorString(s -> s.replace(from, to));
+    }
+
+    public Text refactorString(Function<String, String> refactor) {
+        return fromText(refactor.apply(this.toText()));
     }
 
     public enum TextFormat {
