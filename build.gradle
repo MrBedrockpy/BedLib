@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "ru.mrbedrockpy"
-version = "1.4.9"
+version = "1.4.9.1"
 def artifact = "BedLib"
 
 repositories {
