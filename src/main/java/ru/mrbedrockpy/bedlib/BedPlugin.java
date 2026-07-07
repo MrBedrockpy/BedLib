@@ -3,6 +3,7 @@ package ru.mrbedrockpy.bedlib;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.plugin.java.JavaPlugin;
+import ru.mrbedrockpy.bedlib.autoregister.AutoRegisterManager;
 import ru.mrbedrockpy.bedlib.command.CommandManager;
 import ru.mrbedrockpy.bedlib.config.ConfigManager;
 import ru.mrbedrockpy.bedlib.serialize.SerializeConfig;
@@ -24,6 +25,7 @@ public abstract class BedPlugin<P extends BedPlugin<P>> extends JavaPlugin {
         this.importLibraries();
         this.initConfigs();
         this.initManagers();
+        AutoRegisterManager.register((P) this);
         this.commandManager.registerCommands();
         this.placeholderManager.registerPlaceholders();
     }
