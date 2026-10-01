@@ -1,0 +1,51 @@
+hub-server: hub
+lobby-world: world
+balance-format: <gray>| <#cd7f32>%bronze% <gray>| <white>%iron% <gray>| <#ffd700>%gold%
+  <gray>| <#55ffff>%diamond% <gray>| <#4a6cff>%lapis% <gray>|
+respawn-duration: 5
+rewards:
+  kill: 10
+  bed-break: 50
+  win: 250
+  lobby-point1: 100
+  lobby-point2: 20
+ui:
+  replace-choice-items: true
+  add-replace-material: LIME_CONCRETE
+  remove-replace-material: RED_CONCRETE
+  # S - подрежим
+  # # - декор
+  # < - предыдущая страница
+  # > - следующая страница
+  # . - пустой слот
+  main-menu:
+  - '# . . . . . . . #'
+  - '# . S S S S S . #'
+  - '# . S S S S S . #'
+  - '# . S S S S S . #'
+  - '# . . . . . . . #'
+  - '# . . < . > . . #'
+  # S - арена
+  # # - декор
+  # < - предыдущая страница
+  # > - следующая страница
+  # % - быстрое подключение
+  # $ - обновить арены
+  # . - пустой слот
+  arena-menu:
+  - '# . . . % . . . #'
+  - '# . S S S S S . #'
+  - '# . S S S S S . #'
+  - '# . S S S S S . #'
+  - '# . . . . . . . #'
+  - '# . . < $ > . . #'
+  # Распространяется только на менюшки в лобби режима
+  materials:
+    decor: GRAY_STAINED_GLASS_PANE
+    submode: PAPER
+    started-arena: GREEN_STAINED_GLASS
+    waiting-arena: YELLOW_STAINED_GLASS
+    previous-page: FEATHER
+    next-page: FEATHER
+    fast-join: COMPASS
+    refresh: COMPASS

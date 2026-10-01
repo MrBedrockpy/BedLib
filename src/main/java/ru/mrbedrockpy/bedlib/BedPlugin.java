@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import ru.mrbedrockpy.bedlib.autoregister.AutoRegisterManager;
 import ru.mrbedrockpy.bedlib.command.CommandManager;
 import ru.mrbedrockpy.bedlib.config.ConfigManager;
+import ru.mrbedrockpy.bedlib.serialize.DefaultSerializeConfig;
 import ru.mrbedrockpy.bedlib.serialize.SerializeConfig;
 import ru.mrbedrockpy.bedlib.text.PlaceholderManager;
 
@@ -23,9 +24,14 @@ public abstract class BedPlugin<P extends BedPlugin<P>> extends JavaPlugin {
         this.commandManager = new CommandManager<>((P) this);
         this.placeholderManager = new PlaceholderManager<>((P) this);
         this.importLibraries();
+        this.serializeConfig = new DefaultSerializeConfig<>((P) this);
+        this.configManager = ConfigManager.builder()
+                .setPluginFolder(getDataFolder())
+                .build((P) this);
         this.initConfigs();
         this.initManagers();
         AutoRegisterManager.register((P) this);
+        this.configManager.loadConfigs();
         this.commandManager.registerCommands();
         this.placeholderManager.registerPlaceholders();
     }

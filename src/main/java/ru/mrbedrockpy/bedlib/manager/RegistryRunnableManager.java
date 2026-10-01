@@ -8,7 +8,7 @@ import java.util.*;
 
 public abstract class RegistryRunnableManager<P extends BedPlugin<P>, I extends Dto> extends RunnableManager<P> implements Registry<I> {
 
-    private final Map<String, I> items = new HashMap<>();
+    protected final Map<String, I> items = new HashMap<>();
     private final DuplicatePolicy duplicatePolicy;
 
     public RegistryRunnableManager(P plugin) {

@@ -5,6 +5,7 @@ import lombok.Getter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Getter
 public class Pair<K, V> implements Map.Entry<K, V> {
@@ -26,5 +27,18 @@ public class Pair<K, V> implements Map.Entry<K, V> {
     @Override
     public V setValue(V value) {
         return this.value = value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Pair<?, ?> pair)) return false;
+        return Objects.equals(key, pair.key) &&
+                Objects.equals(value, pair.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(key, value);
     }
 }

@@ -10,7 +10,7 @@ import ru.mrbedrockpy.bedlib.BedPlugin;
 @AllArgsConstructor
 public abstract class Placeholder<P extends BedPlugin<P>> extends PlaceholderExpansion {
 
-    private final P plugin;
+    protected final P plugin;
 
     @Override
     public @NotNull String getIdentifier() {

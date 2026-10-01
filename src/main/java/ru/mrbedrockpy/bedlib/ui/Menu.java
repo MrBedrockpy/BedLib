@@ -11,6 +11,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.persistence.PersistentDataType;
+import ru.mrbedrockpy.bedlib.BedLib;
 import ru.mrbedrockpy.bedlib.manager.Dto;
 import ru.mrbedrockpy.bedlib.ui.gui.Gui;
 import ru.mrbedrockpy.bedlib.ui.item.GlobalItem;
@@ -22,14 +23,12 @@ import java.util.*;
 @RequiredArgsConstructor
 public abstract class Menu<M extends Menu<M>> implements Dto {
 
-    public static final NamespacedKey MENU_ID = new NamespacedKey("bedlib", "menu_id");
+    public static final MenuManager MENU_MANAGER = BedLib.getPlugin(BedLib.class).getMenuManager();
 
     private final List<InventoryCloseEvent.Reason> closableReasons = new ArrayList<>(List.of(
             InventoryCloseEvent.Reason.PLUGIN,
             InventoryCloseEvent.Reason.DISCONNECT
     ));
-
-    private final String id = UUID.randomUUID().toString();
 
     private Map<Integer, SlotData> cachedItems;
 
@@ -49,30 +48,37 @@ public abstract class Menu<M extends Menu<M>> implements Dto {
         this.updateItems();
         this.view = this.player.openInventory(inventory);
         this.onOpen();
-        MenuManager.INSTANCE.register(this);
+        MENU_MANAGER.register(this);
+    }
+
+    public void updateGui() {
+        this.gui = this.setupGui();
+        if (this.gui == null) throw new RuntimeException("Gui cannot be null!");
+        if (this.gui.getTitle() == null) throw new RuntimeException("Title cannot be null!");
+        this.updateItems();
     }
 
     public void updateItems() {
         this.inventory.clear();
         if (this.view != null) this.view.setTitle(this.gui.getTitle().toVanilla());
         this.cachedItems = this.gui.render();
-        this.cachedItems.forEach((index, data) -> {
-            Item item = data.item();
-            try {
-                GlobalItem<M> globalItem = (GlobalItem<M>) item;
-                globalItem.setMenu((M) this);
-                globalItem.setX(data.structX());
-                globalItem.setY(data.structY());
-            } catch (ClassCastException ignored) {}
-            this.inventory.setItem(index, item.getProvider(this.player)
-                    .setPersist(MENU_ID, PersistentDataType.STRING, this.getId()).get());
-        });
+        this.cachedItems.forEach(this::updateItem);
+    }
+
+    public void updateItem(int slot, SlotData data) {
+        Item item = data.item();
+        if (item instanceof GlobalItem globalItem) {
+            globalItem.setMenu(this);
+            globalItem.setX(data.structX());
+            globalItem.setY(data.structY());
+        }
     }
 
     public final void click(InventoryClickEvent event) {
         if (!event.getView().getTopInventory().equals(this.inventory)) return;
+        event.setCancelled(true);
         SlotData data = this.cachedItems.getOrDefault(event.getSlot(), null);
-        if (data.item() == null) return;
+        if (data == null || data.item() == null) return;
         data.item().onClick(this, event);
         this.onClick(event);
     }
@@ -80,8 +86,12 @@ public abstract class Menu<M extends Menu<M>> implements Dto {
     public final void close(InventoryCloseEvent event) {
         this.inventory = null;
         if (!closableReasons.contains(event.getReason()) && !closable) Bukkit.getScheduler()
-                .runTaskLater(MenuManager.INSTANCE.getPlugin(), this::open, 1L);
-        else this.onClose(event);
+                .runTaskLater(BedLib.getPlugin(BedLib.class).getMenuManager()
+                        .getPlugin(), this::open, 1L);
+        else {
+            this.onClose(event);
+            MENU_MANAGER.unregister(this);
+        }
     }
 
     public abstract Gui setupGui();
@@ -92,6 +102,6 @@ public abstract class Menu<M extends Menu<M>> implements Dto {
 
     @Override
     public String getId() {
-        return id;
+        return player.getName();
     }
 }

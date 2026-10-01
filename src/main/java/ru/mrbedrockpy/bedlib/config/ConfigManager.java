@@ -21,14 +21,17 @@ public final class ConfigManager<P extends BedPlugin<P>> extends Manager<P> {
 
     private final File configFolder;
     private final SerializeConfig<P> serializeConfig;
-    private final ConfigData[] configs;
+    private final List<ConfigData> configs;
 
-    private ConfigManager(P plugin, File configFolder, SerializeConfig<P> serializeConfig, Class<?>... configs) {
+    private ConfigManager(P plugin, File configFolder, SerializeConfig<P> serializeConfig) {
         super(plugin);
         this.configFolder = configFolder;
         this.serializeConfig = serializeConfig;
-        this.configs = Arrays.stream(configs).map(this::initConfig).filter(Objects::nonNull).toArray(ConfigData[]::new);
-        this.loadConfigs();
+        this.configs = new ArrayList<>();
+    }
+
+    public void registerConfig(Class<?> clazz) {
+        this.configs.add(initConfig(clazz));
     }
 
     private ConfigData initConfig(Class<?> clazz) {
@@ -170,20 +173,14 @@ public final class ConfigManager<P extends BedPlugin<P>> extends Manager<P> {
     public static final class Builder {
 
         private File pluginFolder;
-        private Class<?>[] configs;
 
         public Builder setPluginFolder(File pluginFolder) {
             this.pluginFolder = pluginFolder;
             return this;
         }
 
-        public Builder setConfigs(Class<?>... configs) {
-            this.configs = configs;
-            return this;
-        }
-
-        public <P extends BedPlugin<P>> ConfigManager<P> build(P plugin, SerializeConfig<P> serializeConfig) {
-            return new ConfigManager<>(plugin, pluginFolder, serializeConfig, configs);
+        public <P extends BedPlugin<P>> ConfigManager<P> build(P plugin) {
+            return new ConfigManager<>(plugin, pluginFolder, plugin.getSerializeConfig());
         }
     }
 }

@@ -9,14 +9,17 @@ import org.bukkit.scoreboard.*;
 import ru.mrbedrockpy.bedlib.text.Text;
 
 import java.util.*;
+import java.util.function.Supplier;
 
 public class SideBar {
 
     private final ScoreboardManager manager;
     private final Map<UUID, PlayerBoard> boards = new HashMap<>();
 
-    private final List<SidebarLine> structure = new ArrayList<>();
     private final Text title;
+    private final List<SidebarLine> structure = new ArrayList<>();
+
+    private final Map<String, Supplier<String>> localPlaceholders = new HashMap<>();
 
     private SideBar(Text title) {
         this.manager = Bukkit.getScoreboardManager();
@@ -39,6 +42,10 @@ public class SideBar {
             throw new IllegalStateException("Max 15 lines");
         structure.clear();
         structure.addAll(lines);
+    }
+
+    public void localPlaceholder(String name, Supplier<String> placeholder) {
+        localPlaceholders.put(name, placeholder);
     }
 
     public void addPlayers(Collection<Player> players) {
@@ -85,26 +92,17 @@ public class SideBar {
         for (int i = 0; i < structure.size(); i++) {
             SidebarLine line = structure.get(i);
             Team team = board.lines.get(i);
-            String text;
-            if (line.isEmpty()) text = ChatColor.values()[i].toString();
-            else text = line.getText()
-                    .applyPlaceholders(player)
-                    .toVanilla();
-            text = text + ChatColor.values()[i];
-            String prefix;
-            String suffix;
-            if (text.length() <= 16) {
-                prefix = text;
-                suffix = "";
-            } else {
-                prefix = text.substring(0, 16);
-                String rest = text.substring(16);
-                String lastColors = ChatColor.getLastColors(prefix);
-                suffix = lastColors + rest;
-                if (suffix.length() > 16) suffix = suffix.substring(0, 16);
+            Text textComponent;
+            if (line.isEmpty()) textComponent = Text.fromText(ChatColor.values()[i].toString());
+            else {
+                textComponent = line.getText().applyPlaceholders(player);
+                for (Map.Entry<String, Supplier<String>> entry : localPlaceholders.entrySet()) {
+                    textComponent = textComponent.replace(entry.getKey(), entry.getValue().get());
+                }
             }
-            team.setPrefix(prefix);
-            team.setSuffix(suffix);
+            String text = textComponent.toVanilla() + ChatColor.values()[i];
+            team.setPrefix(text);
+            team.setSuffix("");
         }
     }
 

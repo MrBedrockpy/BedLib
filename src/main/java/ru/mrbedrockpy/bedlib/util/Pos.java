@@ -46,12 +46,21 @@ public class Pos {
         return new Pos(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), loc.getYaw(), loc.getPitch());
     }
 
-    public String serialize() {
-        return x + " " + y + " " + z + " " + yaw + " " + pitch;
+    public String serialize(boolean withRotate) {
+        StringBuilder sb = new StringBuilder(x + " " + y + " " + z);
+        if (withRotate) sb.append(" ").append(yaw)
+                .append(" ").append(pitch);
+        return sb.toString();
     }
 
     @Override
     public String toString() {
-        return "Pos " + x + ", " + y + ", " + z + ", " + yaw + ", " + pitch;
+        return serialize(true);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Pos pos)) return false;
+        return this.x == pos.x && this.y == pos.y && this.z == pos.z;
     }
 }

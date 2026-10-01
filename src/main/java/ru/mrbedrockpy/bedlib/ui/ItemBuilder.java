@@ -2,6 +2,7 @@ package ru.mrbedrockpy.bedlib.ui;
 
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -25,19 +26,24 @@ import java.util.stream.Collectors;
 public class ItemBuilder implements Supplier<ItemStack> {
 
     private final Material material;
-    private final ItemMeta meta;
+    private ItemMeta meta;
     private int amount;
 
     private ItemBuilder(ItemBuilder builder) {
         this.material = builder.material;
-        this.meta = builder.meta.clone();
+        this.meta = builder.meta;
         this.amount = builder.amount;
+        if (this.meta == null) this.meta = Bukkit
+                .getItemFactory().getItemMeta(this.material);
+        this.meta = this.meta.clone();
     }
 
     public ItemBuilder(ItemStack item) {
         this.material = item.getType();
         this.amount = item.getAmount();
         this.meta = item.getItemMeta();
+        if (this.meta == null) this.meta = Bukkit
+                .getItemFactory().getItemMeta(this.material);
     }
 
     public ItemBuilder(Material material) {
@@ -53,7 +59,7 @@ public class ItemBuilder implements Supplier<ItemStack> {
     }
 
     public ItemBuilder setDisplayName(Text displayName) {
-        this.meta.displayName(displayName.toAdventure());
+        if (this.meta != null) this.meta.displayName(displayName.toAdventure());
         return this;
     }
 
@@ -66,13 +72,14 @@ public class ItemBuilder implements Supplier<ItemStack> {
     }
 
     public List<Text> getLore() {
+        if (this.meta == null) return new ArrayList<>();
         List<Component> lore = this.meta.lore();
         if (lore == null) return new ArrayList<>();
         return lore.stream().map(Text::fromAdventure).collect(Collectors.toList());
     }
 
     public ItemBuilder setLore(List<Text> lore) {
-        this.meta.lore(lore.stream().map(Text::toAdventure).toList());
+        if (this.meta != null) this.meta.lore(lore.stream().map(Text::toAdventure).toList());
         return this;
     }
 
@@ -94,7 +101,7 @@ public class ItemBuilder implements Supplier<ItemStack> {
     }
 
     public boolean isUnbreakable() {
-        return this.meta.isUnbreakable();
+        return this.meta != null && this.meta.isUnbreakable();
     }
 
     public ItemBuilder setUnbreakable(boolean unbreakable) {

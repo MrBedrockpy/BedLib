@@ -6,6 +6,7 @@ import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ScanResult;
 import ru.mrbedrockpy.bedlib.BedPlugin;
 import ru.mrbedrockpy.bedlib.command.Argument;
+import ru.mrbedrockpy.bedlib.config.annotation.Config;
 import ru.mrbedrockpy.bedlib.text.Placeholder;
 
 public class AutoRegisterManager {
@@ -14,9 +15,15 @@ public class AutoRegisterManager {
         try (ScanResult scanResult = new ClassGraph()
                 .enableClassInfo().enableAnnotationInfo()
                 .addClassLoader(plugin.getClass().getClassLoader())
+                .acceptPackages(plugin.getClass().getPackage().getName())
+                .disableModuleScanning()
                 .scan()) {
             for (ClassInfo classInfo : scanResult.getClassesWithAnnotation(AutoRegister.class.getName())) {
                 Class<?> clazz = classInfo.loadClass();
+                if (clazz.getAnnotation(Config.class) != null) {
+                    plugin.getConfigManager().registerConfig(clazz);
+                    continue;
+                }
                 Object instance = getInstance(plugin, clazz);
                 if (clazz.getAnnotation(Command.class) != null)
                     plugin.getCommandManager().command(instance);
